@@ -23,9 +23,14 @@ public extension FMODataAPI {
         let urlTmp = "\(baseUri)/\(query)"
         
         let data = try await executeRequest(url: urlTmp, method: .get)
-        
-        let fetchedData = try JSONDecoder().decode(JSONValue<T>.self, from: data)
-        return fetchedData.value
+        let fetched : [T] = []
+        do{
+            let fetchedData = try JSONDecoder().decode(JSONValue<T>.self, from: data)
+            return fetchedData.value
+        } catch {
+            print(error.localizedDescription)
+        }
+        return fetched
     }
     
     /// Execute a generic Patch query
