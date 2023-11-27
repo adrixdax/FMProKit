@@ -50,7 +50,7 @@ enum HTTPError: Error {
     case errorCode408RequestTimeout
     case errorCode409Conflict
     case errorCode410Gone
-    case errorCode411LenghtRequired
+    case errorCode411LengthRequired
     case errorCode412PreconditionFailed
     case errorCode413PayloadTooLarge
     case errorCode414URITooLong
@@ -243,82 +243,71 @@ extension HTTPURLResponse {
     }
     /// This function check the HTTP response code
     func checkResponseCode() throws {
-        let tmpStatusCode = HTTPStatusCode(rawValue: statusCode)
-        if tmpStatusCode?.responseType == .success {
-        } else if tmpStatusCode?.responseType == .clientError {
-            try checksClientErrors()
-        } else if tmpStatusCode?.responseType == .serverError {
-            try checksServerErrors()
-        } else {
+        guard let tmpStatusCode = HTTPStatusCode(rawValue: statusCode) else {
             throw HTTPError.undefinedError
+        }
+        switch tmpStatusCode.responseType {
+        case .success:
+            break
+        case .clientError:
+            try checkClientErrors()
+        case .serverError:
+            try checkServerErrors()
+        case .informational:
+            break
+        case .redirection:
+            break
+        case .undefined:
+            break
         }
     }
     /// This function checks all the HTTP error regarding the server
-    private func checksServerErrors() throws {
-        if status == .internalServerError {
-            throw HTTPError.errorCode500InternalServerError
-        } else if status == .notImplemented {
-            throw HTTPError.errorCode501NotImplemented
-        } else if status == .badGateway {
-            throw HTTPError.errorCode502BadGateway
-        } else if status == .serviceUnavailable {
-            throw HTTPError.errorCode503ServiceUnavailable
-        } else if status == .gatewayTimeout {
-            throw HTTPError.errorCode504GatewayTimeout
-        } else if status == .HTTPVersionNotSupported {
-            throw HTTPError.errorCode505HTTPVersionNotSupported
-        } else if status == .variantAlsoNegotiates {
-            throw HTTPError.errorCode506VariantAlsoNegotiates
-        } else if status == .insufficientStorage {
-            throw HTTPError.errorCode507InsufficientStorage
-        } else if status == .loopDetected {
-            throw HTTPError.errorCode508LoopDetected
-        } else if status == .notExtended {
-            throw HTTPError.errorCode510NotExtended
-        } else if status == .networkAuthenticationRequired {
-            throw HTTPError.errorCode511NetworkAuthenticationRequired
+    private func checkServerErrors() throws {
+        let errorMap: [HTTPStatusCode: HTTPError] = [
+            .internalServerError: .errorCode500InternalServerError,
+            .notImplemented: .errorCode501NotImplemented,
+            .badGateway: .errorCode502BadGateway,
+            .serviceUnavailable: .errorCode503ServiceUnavailable,
+            .gatewayTimeout: .errorCode504GatewayTimeout,
+            .HTTPVersionNotSupported: .errorCode505HTTPVersionNotSupported,
+            .variantAlsoNegotiates: .errorCode506VariantAlsoNegotiates,
+            .insufficientStorage: .errorCode507InsufficientStorage,
+            .loopDetected: .errorCode508LoopDetected,
+            .notExtended: .errorCode510NotExtended,
+            .networkAuthenticationRequired: .errorCode511NetworkAuthenticationRequired
+        ]
+        if let error = errorMap[status!] {
+            throw error
         }
     }
+
     /// This function checks all the HTTP error regarding the client
-    private func checksClientErrors() throws {
-        if status == .badRequest {
-            throw HTTPError.errorCode400BadRequest
-        } else if status == .unauthorized {
-            throw HTTPError.errorCode401Unauthorized
-        } else if status == .paymentRequired {
-            throw HTTPError.errorCode402PaymentRequired
-        } else if status == .forbidden {
-            throw HTTPError.errorCode403Forbidden
-        } else if status == .notFound {
-            throw HTTPError.errorCode404NotFound
-        } else if status == .methodNotAllowed {
-            throw HTTPError.errorCode405MethodNotAllowed
-        } else if status == .notAcceptable {
-            throw HTTPError.errorCode406NotAcceptable
-        } else if status == .proxyAuthenticationRequired {
-            throw HTTPError.errorCode407ProxyAuthenticationRequired
-        } else if status == .requestTimeout {
-            throw HTTPError.errorCode408RequestTimeout
-        } else if status == .conflict {
-            throw HTTPError.errorCode409Conflict
-        } else if status == .gone {
-            throw HTTPError.errorCode410Gone
-        } else if status == .lengthRequired {
-            throw HTTPError.errorCode411LenghtRequired
-        } else if status == .preconditionFailed {
-            throw HTTPError.errorCode412PreconditionFailed
-        } else if status == .payloadTooLarge {
-            throw HTTPError.errorCode413PayloadTooLarge
-        } else if status == .URITooLong {
-            throw HTTPError.errorCode414URITooLong
-        } else if status == .unsupportedMediaType {
-            throw HTTPError.errorCode415UnsupportedMediaType
-        } else if status == .rangeNotSatisfiable {
-            throw HTTPError.errorCode416RangeNotSatisfiable
-        } else if status == .expectationFailed {
-            throw HTTPError.errorCode417ExpectationFailed
-        } else if status == .teapot {
-            throw HTTPError.errorCode418Teapot
+    private func checkClientErrors() throws {
+        let errorMap: [HTTPStatusCode: HTTPError] = [
+            .badRequest: .errorCode400BadRequest,
+            .unauthorized: .errorCode401Unauthorized,
+            .paymentRequired: .errorCode402PaymentRequired,
+            .forbidden: .errorCode403Forbidden,
+            .notFound: .errorCode404NotFound,
+            .methodNotAllowed: .errorCode405MethodNotAllowed,
+            .notAcceptable: .errorCode406NotAcceptable,
+            .proxyAuthenticationRequired: .errorCode407ProxyAuthenticationRequired,
+            .requestTimeout: .errorCode408RequestTimeout,
+            .conflict: .errorCode409Conflict,
+            .gone: .errorCode410Gone,
+            .lengthRequired: .errorCode411LengthRequired,
+            .preconditionFailed: .errorCode412PreconditionFailed,
+            .payloadTooLarge: .errorCode413PayloadTooLarge,
+            .URITooLong: .errorCode414URITooLong,
+            .unsupportedMediaType: .errorCode415UnsupportedMediaType,
+            .rangeNotSatisfiable: .errorCode416RangeNotSatisfiable,
+            .expectationFailed: .errorCode417ExpectationFailed,
+            .teapot: .errorCode418Teapot
+        ]
+
+        if let error = errorMap[status!] {
+            throw error
         }
     }
+
 }

@@ -6,61 +6,43 @@
 //
 
 import SwiftUI
+
 extension APIProtocol {
-    /// Build and execute an HTTPRequest fetching all the data
+    /// Build and execute an HTTPRequest fetching data
     /// - Parameters:
-    ///   - urlTmp: The final url
-    ///   - method: The type of the HTTPMethod
-    /// - Returns: returns the data fetched from the HTTP request
-    func executeRequest(urlTmp: String, method: HTTPMethod) async throws -> Data {
-        guard let url = urlTmp.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-              let requestURL = URL(string: url) else {
+    ///   - url: The final URL as a String
+    ///   - method: The HTTP method
+    /// - Returns: The fetched data
+    func executeRequest(url: String, method: HTTPMethod) async throws -> Data {
+        guard let requestURL = URL(string: url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "") else {
             throw URLError(.badURL)
         }
         
-        var request: URLRequest
-        request = URLRequest(url: requestURL)
+        var request = URLRequest(url: requestURL)
         request.addValue(authData, forHTTPHeaderField: "Authorization")
         request.httpMethod = method.rawValue
         
         self.request = request
-        
+
         let (data, response) = try await URLSession.shared.data(for: request)
-        
         responseJSON = data
-        
+
         try (response as? HTTPURLResponse)?.checkResponseCode()
-        
+
         return data
     }
 
-    /// Build and execute an HTTPRequest fetching all the data
+    /// Build and execute an HTTPRequest sending JSON data and fetching a response
     /// - Parameters:
-    ///   - urlTmp: The final url
-    ///   - method: The type of the HTTPMethod
-    ///   - data: the data converted to JSON file
-    /// - Returns: returns the data fetched from the HTTP request
-    func executeRequest<T: Codable>(urlTmp: String, method: HTTPMethod, data: T) async throws -> Data {
-        guard let url = urlTmp.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-              let requestURL = URL(string: url) else {
-            throw URLError(.badURL)
-        }
-        
-        var request: URLRequest
-        request = URLRequest(url: requestURL)
-        request.addValue(authData, forHTTPHeaderField: "Authorization")
-        request.httpMethod = method.rawValue
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        self.request = request
-        
-        let encoded = try JSONEncoder().encode(data)
-        let (data, response) = try await URLSession.shared.upload(for: request, from: encoded)
-        
-        responseJSON = data
-        
+    ///   - url: The final URL as a String
+    ///   - method: The HTTP method
+    ///   - data: The data to be sent as JSON
+    /// - Returns: The fetched data
+    func executeRequest<T: Codable>(url: String, method: HTTPMethod, data: T) async throws -> Data {
+        let encoded = try await JSONEncoder().encode(executeRequest(url: url, method: method))
+        let (responseData, response) = try await URLSession.shared.upload(for: request, from: encoded)
+        responseJSON = responseData
         try (response as? HTTPURLResponse)?.checkResponseCode()
-
-        return data
+        return responseData
     }
 }

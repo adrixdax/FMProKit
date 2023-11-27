@@ -19,7 +19,7 @@ public extension FMODataAPI {
         let tmpTable = NewDBTable(tableName: tableName, fields: listOfColumns)
         let urlTmp = "\(baseUri)/FileMaker_Tables"
         
-        _ = try await executeRequest(urlTmp: urlTmp, method: .post, data: tmpTable)
+        _ = try await executeRequest(url: urlTmp, method: .post, data: tmpTable)
     }
 
     /// Add a list of columns to an existent table
@@ -40,7 +40,7 @@ public extension FMODataAPI {
         let fields = AddFieldToTable(fields: listOfColumns)
         let urlTmp = "\(baseUri)/FileMaker_Tables/\(tableName)"
         
-        _ = try await executeRequest(urlTmp: urlTmp, method: .patch, data: fields)
+        _ = try await executeRequest(url: urlTmp, method: .patch, data: fields)
     }
     
     /// Deletes the table using its name
@@ -54,7 +54,7 @@ public extension FMODataAPI {
         
         let urlTmp = "\(baseUri)/FileMaker_Tables/\(tableName)"
         
-        _ = try await executeRequest(urlTmp: urlTmp, method: .delete)
+        _ = try await executeRequest(url: urlTmp, method: .delete)
     }
 
     /// Delete a column using its name from a specified table
@@ -74,7 +74,7 @@ public extension FMODataAPI {
         
         let urlTmp = "\(baseUri)/FileMaker_Tables/\(tableName)/\(fieldName)"
         
-        _ = try await executeRequest(urlTmp: urlTmp, method: .delete)
+        _ = try await executeRequest(url: urlTmp, method: .delete)
     }
     
     /// Create an index for a specified table
@@ -96,7 +96,7 @@ public extension FMODataAPI {
         let index = IndexValue(indexName: index)
         let urlTmp = "\(baseUri)/FileMaker_Indexes/\(tableName)"
         
-        _ = try await executeRequest(urlTmp: urlTmp, method: .post, data: index)
+        _ = try await executeRequest(url: urlTmp, method: .post, data: index)
     }
     
     /// Delete an index from a table using its name
@@ -116,6 +116,6 @@ public extension FMODataAPI {
         
         let urlTmp = "\(baseUri)/FileMaker_Indexes/\(tableName)/\(index)"
         
-        _ = try await executeRequest(urlTmp: urlTmp, method: .delete)
+        _ = try await executeRequest(url: urlTmp, method: .delete)
     }
 }

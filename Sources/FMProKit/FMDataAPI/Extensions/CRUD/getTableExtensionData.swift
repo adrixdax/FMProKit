@@ -23,7 +23,7 @@ public extension FMDataAPI {
         let data: Data
         
         do {
-            data = try await executeRequest(urlTmp: urlTmp, method: .get)
+            data = try await executeRequest(url: urlTmp, method: .get)
         } catch HTTPError.errorCode401Unauthorized {
             try await fetchToken()
             return try await getTable(table: table, offset: offset, numberOfElements: numberOfElements)

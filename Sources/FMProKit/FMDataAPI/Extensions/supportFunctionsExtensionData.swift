@@ -23,7 +23,7 @@ public extension FMDataAPI {
         let query = Query(query: [data])
         
         do {
-            let fetchedData = try await executeRequest(urlTmp: url, method: .post, data: query)
+            let fetchedData = try await executeRequest(url: url, method: .post, data: query)
             let fetchedIds = try JSONDecoder().decode(DataModel<T>.self, from: fetchedData)
             
             return fetchedIds.response.data.map { $0.recordId }
@@ -49,7 +49,7 @@ public extension FMDataAPI {
         let data: Data
         
         do {
-            data = try await executeRequest(urlTmp: url, method: .get)
+            data = try await executeRequest(url: url, method: .get)
             
             
         } catch {

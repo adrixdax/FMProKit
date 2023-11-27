@@ -13,7 +13,7 @@ public extension FMODataAPI {
     func executeQueryDelete(query: String) async throws {
         let urlTmp = "\(baseUri)/\(query)"
         
-        _ = try await executeRequest(urlTmp: urlTmp, method: .delete)
+        _ = try await executeRequest(url: urlTmp, method: .delete)
     }
 
     /// Execute a generic Get query
@@ -22,7 +22,7 @@ public extension FMODataAPI {
     func executeQueryGet<T: Codable>(query: String) async throws -> [T] {
         let urlTmp = "\(baseUri)/\(query)"
         
-        let data = try await executeRequest(urlTmp: urlTmp, method: .get)
+        let data = try await executeRequest(url: urlTmp, method: .get)
         
         let fetchedData = try JSONDecoder().decode(JSONValue<T>.self, from: data)
         return fetchedData.value
@@ -35,7 +35,7 @@ public extension FMODataAPI {
     func executeQueryPatch<T: Codable>(query: String, data: T) async throws {
         let urlTmp = "\(baseUri)/\(query)"
         
-        _ = try await executeRequest(urlTmp: urlTmp, method: .patch, data: data)
+        _ = try await executeRequest(url: urlTmp, method: .patch, data: data)
     }
  
     /// Execute a generic Post query
@@ -45,6 +45,6 @@ public extension FMODataAPI {
     func executeQueryPost<T: Codable>(query: String, data: T) async throws {
         let url = "\(baseUri)/\(query)"
         
-        _ = try await executeRequest(urlTmp: url, method: .post, data: data)
+        _ = try await executeRequest(url: url, method: .post, data: data)
     }
 }

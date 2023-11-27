@@ -25,7 +25,7 @@ public extension FMODataAPI {
             urlTmp += "/\(otherTableFormatted)"
         }
         
-        let data = try await executeRequest(urlTmp: urlTmp, method: .get)
+        let data = try await executeRequest(url: urlTmp, method: .get)
         return try decodeJSONArray(data: data)
     }
     /// The function handles a simple join using the passed table in input based on the id of the record
@@ -45,7 +45,7 @@ public extension FMODataAPI {
             urlTmp += "/\(otherTableFormatted)"
         }
         
-        let data = try await executeRequest(urlTmp: urlTmp, method: .get)
+        let data = try await executeRequest(url: urlTmp, method: .get)
         return try decodeJSONArray(data: data)
     }
     func getRelations<T: Codable>(table: String, id: Int, otherTables: String...) async throws -> [T] {
@@ -59,7 +59,7 @@ public extension FMODataAPI {
             urlTmp += "/\(otherTableFormatted)"
         }
         
-        let data = try await executeRequest(urlTmp: urlTmp, method: .get)
+        let data = try await executeRequest(url: urlTmp, method: .get)
         return try decodeJSONArray(data: data)
     }
     /// The function handles a simple join using the passed table in input and a specified query
@@ -77,7 +77,7 @@ public extension FMODataAPI {
         }
         let urlTmp = "\(baseUri)/$crossjoin(\(crossedJoinVariables))?$\(query)&$expand=\(fetchedTable)($select=*)"
         
-        let data = try await executeRequest(urlTmp: urlTmp, method: .get)
+        let data = try await executeRequest(url: urlTmp, method: .get)
         return try decodeJSONArray(data: data)
     }
     /// The function handles a simple join using the passed table in input and a specified query
@@ -94,7 +94,7 @@ public extension FMODataAPI {
         }
         let urlTmp = "\(baseUri)/$crossjoin(\(crossedJoinVariables))?$$expand=\(fetchedTable)($select=*)"
         
-        let data = try await executeRequest(urlTmp: urlTmp, method: .get)
+        let data = try await executeRequest(url: urlTmp, method: .get)
         return try decodeJSONArray(data: data)
     }
 }

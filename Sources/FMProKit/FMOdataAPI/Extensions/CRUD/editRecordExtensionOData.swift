@@ -24,7 +24,7 @@ public extension FMODataAPI {
         
         let urlTmp = "\(baseUri)/\(table)('\(id)')"
         
-        _ = try await executeRequest(urlTmp: urlTmp, method: .patch, data: data)
+        _ = try await executeRequest(url: urlTmp, method: .patch, data: data)
     }
     
     /// Edit a record inside the specified table using its id
@@ -44,7 +44,8 @@ public extension FMODataAPI {
         
         let urlTmp = "\(baseUri)/\(table)('\(id.uuidString)')"
         
-        _ = try await executeRequest(urlTmp: urlTmp, method: .patch, data: data)
+
+        _ = try await executeRequest(url: urlTmp, method: .patch, data: data)
     }
 
     /// Edit a record inside the specified table using its id
@@ -62,7 +63,7 @@ public extension FMODataAPI {
 
         let urlTmp = "\(baseUri)/\(table)(\(id))"
         
-        _ = try await executeRequest(urlTmp: urlTmp, method: .patch, data: data)
+        _ = try await executeRequest(url: urlTmp, method: .patch, data: data)
     }
     
     /// Edit all the records inside the specified table matching a query
@@ -84,7 +85,7 @@ public extension FMODataAPI {
         
         let urlTmp = "\(baseUri)/\(table)?\(query)"
         
-        _ = try await executeRequest(urlTmp: urlTmp, method: .patch, data: data)
+        _ = try await executeRequest(url: urlTmp, method: .patch, data: data)
     }
     
     /// Edit all the records inside the specified table matching a filter query
@@ -115,6 +116,6 @@ public extension FMODataAPI {
             urlTmp = "\(baseUri)/\(table)?$filter= \(field) \(filterOption.rawValue) \(value)"
         }
         
-        _ = try await executeRequest(urlTmp: urlTmp, method: .patch, data: data)
+        _ = try await executeRequest(url: urlTmp, method: .patch, data: data)
     }
 }

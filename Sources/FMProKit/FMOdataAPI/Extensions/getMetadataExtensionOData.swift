@@ -12,7 +12,7 @@ public extension FMODataAPI {
     /// - Returns: the encoded XML file
     func getMetadataAsData() async throws -> Data {
         let urlTmp = "\(baseUri)/$metadata"
-        let data = try await executeRequest(urlTmp: urlTmp, method: .get)
+        let data = try await executeRequest(url: urlTmp, method: .get)
         
         return data
     }
@@ -21,7 +21,7 @@ public extension FMODataAPI {
     /// - Returns: the XML file as a string
     func getMetadataAsString() async throws -> String? {
         let urlTmp = "\(baseUri)/$metadata"
-        let data = try await executeRequest(urlTmp: urlTmp, method: .get)
+        let data = try await executeRequest(url: urlTmp, method: .get)
         
         return String(data: data, encoding: String.Encoding.utf8)
     }
@@ -30,7 +30,7 @@ public extension FMODataAPI {
     /// - Returns: Returns an array of TableValue that contains all the informations of all the tables inside the database
     func getListOfTables() async throws -> [TableValue] {
         let urlTmp = "\(baseUri)"
-        let data = try await executeRequest(urlTmp: urlTmp, method: .get)
+        let data = try await executeRequest(url: urlTmp, method: .get)
         
         return try decodeJSONArray(data: data)
     }

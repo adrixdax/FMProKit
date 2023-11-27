@@ -18,7 +18,7 @@ public extension FMDataAPI {
         let urlTmp = "\(baseUri)/layouts/\(table)/script/\(scriptName)"
         
         do {
-            let data = try await executeRequest(urlTmp: urlTmp, method: .get)
+            let data = try await executeRequest(url: urlTmp, method: .get)
             return try JSONDecoder().decode(ScriptDecoder.self, from: data)
         } catch  HTTPError.errorCode401Unauthorized {
             try await fetchToken()

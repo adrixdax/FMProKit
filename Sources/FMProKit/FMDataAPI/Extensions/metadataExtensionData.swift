@@ -14,7 +14,7 @@ public extension FMDataAPI {
         let url = "https://\(hostname)/fmi/data/\(protocolVersion.rawValue)/productinfo"
         
         do {
-            let data: Data = try await executeRequest(urlTmp: url, method: .get)
+            let data: Data = try await executeRequest(url: url, method: .get)
             let fetchedData = try JSONDecoder().decode(ProductInfoMetadata.self, from: data)
             
             return fetchedData.response.productInfo
@@ -31,7 +31,7 @@ public extension FMDataAPI {
         let url = "https://\(hostname)/fmi/data/\(protocolVersion.rawValue)/databases"
 
         do {
-            let data: Data = try await executeRequest(urlTmp: url, method: .get)
+            let data: Data = try await executeRequest(url: url, method: .get)
             let fetchedData = try JSONDecoder().decode(DatabasesMetadata.self, from: data)
             
             return fetchedData.response.databases
@@ -49,7 +49,7 @@ public extension FMDataAPI {
          let urlTmp = "https://\(hostname)/fmi/data/vLatest/databases/\(database)/scripts"
         
         do {
-            let data: Data = try await executeRequest(urlTmp: urlTmp, method: .get)
+            let data: Data = try await executeRequest(url: urlTmp, method: .get)
             let fetchedData = try JSONDecoder().decode(ScrpitsMetaData.self, from: data)
             return fetchedData.response.scripts
         } catch HTTPError.errorCode401Unauthorized {
@@ -66,7 +66,7 @@ public extension FMDataAPI {
         let urlTmp = "https://\(hostname)/fmi/data/vLatest/databases/\(database)/layouts"
 
         do {
-            let data: Data = try await executeRequest(urlTmp: urlTmp, method: .get)
+            let data: Data = try await executeRequest(url: urlTmp, method: .get)
             let fetchedData = try JSONDecoder().decode(LayoutsMetaData.self, from: data)
             
             return fetchedData.response.layouts

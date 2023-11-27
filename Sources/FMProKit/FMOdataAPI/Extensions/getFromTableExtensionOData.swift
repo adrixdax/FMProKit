@@ -26,7 +26,7 @@ public extension FMODataAPI {
         }
         
         let urlTmp = "\(baseUri)/\(table)?$top=\(number)"
-        let data = try await executeRequest(urlTmp: urlTmp, method: .get)
+        let data = try await executeRequest(url: urlTmp, method: .get)
         
         return try decodeJSONArray(data: data)
     }
@@ -50,7 +50,7 @@ public extension FMODataAPI {
         }
         
         let urlTmp = "\(baseUri)/\(table)?$skip=\(number)"
-        let data = try await executeRequest(urlTmp: urlTmp, method: .get)
+        let data = try await executeRequest(url: urlTmp, method: .get)
         
         return try decodeJSONArray(data: data)
     }
@@ -69,7 +69,7 @@ public extension FMODataAPI {
         }
         
         let urlTmp = "\(baseUri)/\(table)('\(id)')"
-        let data = try await executeRequest(urlTmp: urlTmp, method: .get)
+        let data = try await executeRequest(url: urlTmp, method: .get)
         
         return try decodeJSONSingleValue(data: data)
     }
@@ -88,7 +88,7 @@ public extension FMODataAPI {
         }
         
         let urlTmp = "\(baseUri)/\(table)('\(id.uuidString)')"
-        let data = try await executeRequest(urlTmp: urlTmp, method: .get)
+        let data = try await executeRequest(url: urlTmp, method: .get)
         
         return try decodeJSONSingleValue(data: data)
     }
@@ -107,7 +107,7 @@ public extension FMODataAPI {
         }
         
         let urlTmp = "\(baseUri)/\(table)(\(id))"
-        let data = try await executeRequest(urlTmp: urlTmp, method: .get)
+        let data = try await executeRequest(url: urlTmp, method: .get)
         
         return try decodeJSONSingleValue(data: data)
     }
@@ -123,7 +123,7 @@ public extension FMODataAPI {
         }
         
         let urlTmp = "\(baseUri)/\(table)/$count"
-        let data = try await executeRequest(urlTmp: urlTmp, method: .get)
+        let data = try await executeRequest(url: urlTmp, method: .get)
         
         return try JSONDecoder().decode(Int.self, from: data)
     }
@@ -145,7 +145,7 @@ public extension FMODataAPI {
         }
         
         let urlTmp = "\(baseUri)/\(table)('\(id)')/\(field)"
-        let data = try await executeRequest(urlTmp: urlTmp, method: .get)
+        let data = try await executeRequest(url: urlTmp, method: .get)
         
         return try decodeJSONSingleValue(data: data)
     }
@@ -168,7 +168,7 @@ public extension FMODataAPI {
         }
         
         let urlTmp = "\(baseUri)/\(table)('\(id.uuidString)')/\(field)"
-        let data = try await executeRequest(urlTmp: urlTmp, method: .get)
+        let data = try await executeRequest(url: urlTmp, method: .get)
         
         return try decodeJSONSingleValue(data: data)
     }
@@ -191,7 +191,7 @@ public extension FMODataAPI {
         }
         
         let urlTmp = "\(baseUri)/\(table)(\(id))/\(field)"
-        let data = try await executeRequest(urlTmp: urlTmp, method: .get)
+        let data = try await executeRequest(url: urlTmp, method: .get)
         
         return try decodeJSONSingleValue(data: data)
     }
@@ -215,7 +215,7 @@ public extension FMODataAPI {
         
         let urlTmp = "\(baseUri)/\(table)('\(id)')/\(field)/$value"
         
-        return try await executeRequest(urlTmp: urlTmp, method: .get)
+        return try await executeRequest(url: urlTmp, method: .get)
     }
     
     /// Retrieves the value of a field of a specific record as a binary Data
@@ -237,7 +237,7 @@ public extension FMODataAPI {
         
         let urlTmp = "\(baseUri)/\(table)('\(id.uuidString)')/\(field)/$value"
         
-        return try await executeRequest(urlTmp: urlTmp, method: .get)
+        return try await executeRequest(url: urlTmp, method: .get)
     }
     
     /// Retrieves the value of a field of a specific record as a binary Data
@@ -259,6 +259,6 @@ public extension FMODataAPI {
         
         let urlTmp = "\(baseUri)/\(table)(\(id))/\(field)/$value"
         
-        return try await executeRequest(urlTmp: urlTmp, method: .get)
+        return try await executeRequest(url: urlTmp, method: .get)
     }
 }

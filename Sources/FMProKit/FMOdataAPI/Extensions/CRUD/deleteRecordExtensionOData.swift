@@ -23,7 +23,7 @@ public extension FMODataAPI {
         
         let urlTmp = "\(baseUri)/\(table)('\(id)')"
         
-        _ = try await executeRequest(urlTmp: urlTmp, method: .delete)
+        _ = try await executeRequest(url: urlTmp, method: .delete)
     }
     
     /// Delete the record inside a specific table using its id
@@ -41,7 +41,7 @@ public extension FMODataAPI {
         
         let urlTmp = "\(baseUri)/\(table)('\(id.uuidString)')"
         
-        _ = try await executeRequest(urlTmp: urlTmp, method: .delete)
+        _ = try await executeRequest(url: urlTmp, method: .delete)
     }
  
     /// Delete the record inside a specific table using its id
@@ -60,7 +60,7 @@ public extension FMODataAPI {
         
         let urlTmp = "\(baseUri)/\(table)(\(id))"
         
-        _ = try await executeRequest(urlTmp: urlTmp, method: .delete)
+        _ = try await executeRequest(url: urlTmp, method: .delete)
     }
     
     /// Delete all the records inside a specific table matching a query
@@ -80,7 +80,7 @@ public extension FMODataAPI {
         
         let urlTmp = "\(baseUri)/\(table)?\(query)"
         
-        _ = try await executeRequest(urlTmp: urlTmp, method: .delete)
+        _ = try await executeRequest(url: urlTmp, method: .delete)
     }
 
     /// Delete all the records inside a specific table matching a filter query
@@ -104,6 +104,6 @@ public extension FMODataAPI {
             urlTmp = "\(baseUri)/\(table)?$filter= \(field) \(filterOption.rawValue) \(value)"
         }
         
-        _ = try await executeRequest(urlTmp: urlTmp, method: .delete)
+        _ = try await executeRequest(url: urlTmp, method: .delete)
     }
 }

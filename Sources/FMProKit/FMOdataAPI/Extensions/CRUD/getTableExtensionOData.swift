@@ -40,7 +40,7 @@ public extension FMODataAPI {
         }
         
         let urlTmp = "\(baseUri)/\(table)?\(query)"
-        let data = try await executeRequest(urlTmp: urlTmp, method: .get)
+        let data = try await executeRequest(url: urlTmp, method: .get)
         
         return try decodeJSONArray(data: data)
     }
@@ -67,7 +67,7 @@ public extension FMODataAPI {
             urlTmp = "\(baseUri)/\(table)?$filter= \(field) \(filterOption.rawValue) \(value)"
         }
         
-        let data = try await executeRequest(urlTmp: urlTmp, method: .get)
+        let data = try await executeRequest(url: urlTmp, method: .get)
         
         return try decodeJSONArray(data: data)
     }
@@ -87,7 +87,7 @@ public extension FMODataAPI {
         }
         
         let urlTmp = "\(baseUri)/\(table)?$orderby=\(fieldName) \(order.rawValue)"
-        let data = try await executeRequest(urlTmp: urlTmp, method: .get)
+        let data = try await executeRequest(url: urlTmp, method: .get)
         
         return try decodeJSONArray(data: data)
     }

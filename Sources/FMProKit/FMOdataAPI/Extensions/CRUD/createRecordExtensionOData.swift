@@ -21,6 +21,6 @@ public extension FMODataAPI {
         
         let urlTmp = "\(baseUri)/\(table)"
         
-        _ = try await executeRequest(urlTmp: urlTmp, method: .post, data: data)
+        _ = try await executeRequest(url: urlTmp, method: .post, data: data)
     }
 }

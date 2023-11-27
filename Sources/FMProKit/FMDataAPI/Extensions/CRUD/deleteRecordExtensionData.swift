@@ -22,7 +22,7 @@ public extension FMDataAPI {
         let urlTmp = "\(baseUri)/layouts/\(table)/records/\(recordID)"
         
         do {
-            _ = try await executeRequest(urlTmp: urlTmp, method: .delete)
+            _ = try await executeRequest(url: urlTmp, method: .delete)
         } catch HTTPError.errorCode401Unauthorized {
             try await fetchToken()
             try await deleteRecord(table: table, recordID: recordID)
@@ -45,7 +45,7 @@ public extension FMDataAPI {
             let urlTmp = "\(baseUri)/layouts/\(table)/records/\(delete)"
             
             do {
-                _ = try await executeRequest(urlTmp: urlTmp, method: .delete)
+                _ = try await executeRequest(url: urlTmp, method: .delete)
             } catch HTTPError.errorCode401Unauthorized {
                 try await fetchToken()
                 try await deleteRecord(table: table, data: data)

@@ -16,11 +16,11 @@ public extension FMODataAPI {
         let urlTmp = "\(baseUri)/Script.\(scriptName)"
         
         if scriptParameterValue == nil {
-            let data = try await executeRequest(urlTmp: urlTmp, method: .post)
+            let data = try await executeRequest(url: urlTmp, method: .post)
             let fetchedData = try JSONDecoder().decode(Scripter.self, from: data)
             return fetchedData.scriptResult
         } else {
-            let data = try await executeRequest(urlTmp: urlTmp, method: .post, data: ScriptCaller(scriptParameterValue: scriptParameterValue))
+            let data = try await executeRequest(url: urlTmp, method: .post, data: ScriptCaller(scriptParameterValue: scriptParameterValue))
             let fetchedData = try JSONDecoder().decode(Scripter.self, from: data)
             return fetchedData.scriptResult
         }
