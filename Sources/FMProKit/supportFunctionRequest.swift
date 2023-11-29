@@ -18,7 +18,7 @@ extension APIProtocol {
         var request = URLRequest(url: requestURL)
         request.addValue(authData, forHTTPHeaderField: "Authorization")
         request.httpMethod = method.rawValue
-        
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         self.request = request
     }
     
