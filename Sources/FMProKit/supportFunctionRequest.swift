@@ -8,12 +8,9 @@
 import SwiftUI
 
 extension APIProtocol {
-    /// Build and execute an HTTPRequest fetching data
-    /// - Parameters:
-    ///   - url: The final URL as a String
-    ///   - method: The HTTP method
-    /// - Returns: The fetched data
-    func executeRequest(url: String, method: HTTPMethod) async throws -> Data {
+    
+    
+    func createRequest(url: String, method: HTTPMethod) async throws {
         guard let requestURL = URL(string: url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "") else {
             throw URLError(.badURL)
         }
@@ -23,12 +20,25 @@ extension APIProtocol {
         request.httpMethod = method.rawValue
         
         self.request = request
-
+    }
+    
+    
+    
+    
+    /// Build and execute an HTTPRequest fetching data
+    /// - Parameters:
+    ///   - url: The final URL as a String
+    ///   - method: The HTTP method
+    /// - Returns: The fetched data
+    func executeRequest(url: String, method: HTTPMethod) async throws -> Data {
+        do {
+            try await createRequest(url: url, method: method)
+        } catch {
+            print(error.localizedDescription)
+        }
         let (data, response) = try await URLSession.shared.data(for: request)
         responseJSON = data
-
         try (response as? HTTPURLResponse)?.checkResponseCode()
-
         return data
     }
 
@@ -39,7 +49,12 @@ extension APIProtocol {
     ///   - data: The data to be sent as JSON
     /// - Returns: The fetched data
     func executeRequest<T: Codable>(url: String, method: HTTPMethod, data: T) async throws -> Data {
-        let encoded = try await JSONEncoder().encode(executeRequest(url: url, method: method))
+        do {
+            try await createRequest(url: url, method: method)
+        } catch {
+            print(error.localizedDescription)
+        }
+        let encoded = try JSONEncoder().encode(data)
         let (responseData, response) = try await URLSession.shared.upload(for: request, from: encoded)
         responseJSON = responseData
         try (response as? HTTPURLResponse)?.checkResponseCode()
