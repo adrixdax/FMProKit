@@ -20,9 +20,7 @@ public extension FMODataAPI {
         guard !table.isEmpty else {
             throw FMProErrors.tableNameMissing
         }
-        
         let urlTmp = "\(baseUri)/\(table)('\(id)')"
-        
         _ = try await executeRequest(url: urlTmp, method: .delete)
     }
     
@@ -38,9 +36,7 @@ public extension FMODataAPI {
         guard !table.isEmpty else {
             throw FMProErrors.tableNameMissing
         }
-        
         let urlTmp = "\(baseUri)/\(table)('\(id.uuidString)')"
-        
         _ = try await executeRequest(url: urlTmp, method: .delete)
     }
  
@@ -53,13 +49,10 @@ public extension FMODataAPI {
     /// - Throws: a FMProErrors.tableNameMissing error when the table parameter is empty
     /// - Attention: This function is for Numeric id and not for the Text ones
     func deleteRecord(table: String, id: Int) async throws {
-        
         guard !table.isEmpty else {
             throw FMProErrors.tableNameMissing
         }
-        
         let urlTmp = "\(baseUri)/\(table)(\(id))"
-        
         _ = try await executeRequest(url: urlTmp, method: .delete)
     }
     
@@ -77,9 +70,7 @@ public extension FMODataAPI {
         guard !table.isEmpty else {
             throw FMProErrors.tableNameMissing
         }
-        
         let urlTmp = "\(baseUri)/\(table)?\(query)"
-        
         _ = try await executeRequest(url: urlTmp, method: .delete)
     }
 
@@ -96,14 +87,12 @@ public extension FMODataAPI {
         guard !table.isEmpty else {
             throw FMProErrors.tableNameMissing
         }
-        
         var urlTmp = ""
         if var _ = value as? String {
             urlTmp = "\(baseUri)/\(table)?$filter= \(field) \(filterOption.rawValue) '\(value)'"
         } else {
             urlTmp = "\(baseUri)/\(table)?$filter= \(field) \(filterOption.rawValue) \(value)"
         }
-        
         _ = try await executeRequest(url: urlTmp, method: .delete)
     }
 }

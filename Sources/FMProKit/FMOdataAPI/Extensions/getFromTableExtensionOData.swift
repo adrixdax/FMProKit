@@ -204,7 +204,7 @@ public extension FMODataAPI {
     /// - Returns: return a single object of type Data
     /// - Throws: an HTTPError.errorCode_404_notFound error when using the wrong table name, the wrong field name or the recordId doesn't exist
     /// - Throws: a FMProErrors.tableNameMissing error when the table parameter is empty
-    func getBinaryField(table: String, id: String, field: String) async throws -> Data {
+    func getDataField(table: String, id: String, field: String) async throws -> Data {
         guard !table.isEmpty else {
             throw FMProErrors.tableNameMissing
         }
@@ -226,7 +226,7 @@ public extension FMODataAPI {
     /// - Returns: return a single object of type Data
     /// - Throws: an HTTPError.errorCode_404_notFound error when using the wrong table name, the wrong field name or the recordId doesn't exist
     /// - Throws: a FMProErrors.tableNameMissing error when the table parameter is empty
-    func getBinaryField(table: String, id: UUID, field: String) async throws -> Data {
+    func getDataField(table: String, id: UUID, field: String) async throws -> Data {
         guard !table.isEmpty else {
             throw FMProErrors.tableNameMissing
         }
@@ -248,7 +248,7 @@ public extension FMODataAPI {
     /// - Returns: return a single object of type Data
     /// - Throws: an HTTPError.errorCode_404_notFound error when using the wrong table name, the wrong field name or the recordId doesn't exist
     /// - Throws: a FMProErrors.tableNameMissing error when the table parameter is empty
-    func getBinaryField(table: String, id: Int, field: String) async throws -> Data {
+    func getDataField(table: String, id: Int, field: String) async throws -> Data {
         guard !table.isEmpty else {
             throw FMProErrors.tableNameMissing
         }
