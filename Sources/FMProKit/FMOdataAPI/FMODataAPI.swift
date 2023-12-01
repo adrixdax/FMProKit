@@ -42,10 +42,6 @@ public class FMODataAPI: APIProtocol {
         }
 
         public func decodeJSONArray<T: Codable>(data: Data) throws -> [T] {
-            return try JSONDecoder().decode([T].self, from: data)
-        }
-
-        public func decodeJSONSingleValue<T: Codable>(data: Data) throws -> T {
-            return try JSONDecoder().decode(T.self, from: data)
+            return try JSONDecoder().decode(JSONValue<T>.self, from: data).value
         }
 }

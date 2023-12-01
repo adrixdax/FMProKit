@@ -18,7 +18,6 @@ public extension FMODataAPI {
         guard !table.isEmpty else {
             throw FMProErrors.tableNameMissing
         }
-        
         return try await executeQueryGet(query: "\(table)")
     }
     
@@ -34,14 +33,12 @@ public extension FMODataAPI {
     /// - Attention: when inserting a filter clause write it this way: “$filter= conditions” Specify that condition should be defined this way: “searchedField confrontationOperator value”
     /// - Attention: value is ‘value’ in case of a Text meanwhile value in case of a Number
     func getTable<T: Codable>(table: String, query: String) async throws -> [T] {
-        
         guard !table.isEmpty else {
             throw FMProErrors.tableNameMissing
         }
         
         let urlTmp = "\(baseUri)/\(table)?\(query)"
         let data = try await executeRequest(url: urlTmp, method: .get)
-        
         return try decodeJSONArray(data: data)
     }
 
@@ -59,16 +56,13 @@ public extension FMODataAPI {
         guard !table.isEmpty else {
             throw FMProErrors.tableNameMissing
         }
-        
         var urlTmp = ""
         if var _ = value as? String {
             urlTmp = "\(baseUri)/\(table)?$filter= \(field) \(filterOption.rawValue) '\(value)'"
         } else {
             urlTmp = "\(baseUri)/\(table)?$filter= \(field) \(filterOption.rawValue) \(value)"
         }
-        
         let data = try await executeRequest(url: urlTmp, method: .get)
-        
         return try decodeJSONArray(data: data)
     }
     
@@ -85,10 +79,8 @@ public extension FMODataAPI {
         guard !table.isEmpty else {
             throw FMProErrors.tableNameMissing
         }
-        
         let urlTmp = "\(baseUri)/\(table)?$orderby=\(fieldName) \(order.rawValue)"
         let data = try await executeRequest(url: urlTmp, method: .get)
-        
         return try decodeJSONArray(data: data)
     }
 }

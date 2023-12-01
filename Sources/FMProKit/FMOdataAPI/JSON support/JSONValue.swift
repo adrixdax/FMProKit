@@ -10,10 +10,6 @@ struct JSONValue <T: Codable>: Codable {
     var value: [T]
 }
 
-struct JSONSingleValue <T: Codable>: Codable {
-    var value: T
-}
-
 public struct TableValue: Codable {
     var name: String?
     var kind: String?

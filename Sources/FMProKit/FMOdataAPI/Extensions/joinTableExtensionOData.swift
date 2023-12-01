@@ -58,9 +58,7 @@ public extension FMODataAPI {
             let otherTableFormatted = otherTable
             urlTmp += "/\(otherTableFormatted)"
         }
-        
-        let data = try await executeRequest(url: urlTmp, method: .get)
-        return try decodeJSONArray(data: data)
+        return try decodeJSONArray(data: try await executeRequest(url: urlTmp, method: .get))
     }
     /// The function handles a simple join using the passed table in input and a specified query
     /// - Parameters:
@@ -76,9 +74,7 @@ public extension FMODataAPI {
             crossedJoinVariables = crossedJoinVariables + "," + table
         }
         let urlTmp = "\(baseUri)/$crossjoin(\(crossedJoinVariables))?$\(query)&$expand=\(fetchedTable)($select=*)"
-        
-        let data = try await executeRequest(url: urlTmp, method: .get)
-        return try decodeJSONArray(data: data)
+        return try decodeJSONArray(data: try await executeRequest(url: urlTmp, method: .get))
     }
     /// The function handles a simple join using the passed table in input and a specified query
     /// - Parameters:
@@ -93,8 +89,6 @@ public extension FMODataAPI {
             crossedJoinVariables = crossedJoinVariables + "," + table
         }
         let urlTmp = "\(baseUri)/$crossjoin(\(crossedJoinVariables))?$$expand=\(fetchedTable)($select=*)"
-        
-        let data = try await executeRequest(url: urlTmp, method: .get)
-        return try decodeJSONArray(data: data)
+        return try decodeJSONArray(data: try await executeRequest(url: urlTmp, method: .get))
     }
 }

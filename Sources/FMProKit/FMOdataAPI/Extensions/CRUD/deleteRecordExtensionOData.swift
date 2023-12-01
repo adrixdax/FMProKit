@@ -16,12 +16,12 @@ public extension FMODataAPI {
     /// - Throws: an HTTPError.errorCode_400_badRequest error when using the wrong data, or model, to update the table
     /// - Throws: a FMProErrors.tableNameMissing error when the table parameter is empty
     /// - Attention: This function is for Text id and not for the Numeric ones
-    func deleteRecord(table: String, id: String) async throws {
+    func deleteRecord(table: String, id: String) async throws -> Bool {
         guard !table.isEmpty else {
             throw FMProErrors.tableNameMissing
         }
         let urlTmp = "\(baseUri)/\(table)('\(id)')"
-        _ = try await executeRequest(url: urlTmp, method: .delete)
+        return try await executeRequest(url: urlTmp, method: .delete).isEmpty
     }
     
     /// Delete the record inside a specific table using its id
@@ -32,12 +32,8 @@ public extension FMODataAPI {
     /// - Throws: an HTTPError.errorCode_400_badRequest error when using the wrong data, or model, to update the table
     /// - Throws: a FMProErrors.tableNameMissing error when the table parameter is empty
     /// - Attention: This function is for UUID id and not for the Number or Text ones
-    func deleteRecord(table: String, id: UUID) async throws {
-        guard !table.isEmpty else {
-            throw FMProErrors.tableNameMissing
-        }
-        let urlTmp = "\(baseUri)/\(table)('\(id.uuidString)')"
-        _ = try await executeRequest(url: urlTmp, method: .delete)
+    func deleteRecord(table: String, id: UUID) async throws -> Bool {
+        return try await deleteRecord(table: table, id: id.uuidString)
     }
  
     /// Delete the record inside a specific table using its id
@@ -48,12 +44,8 @@ public extension FMODataAPI {
     /// - Throws: an HTTPError.errorCode_400_badRequest error when using the wrong data, or model, to update the table
     /// - Throws: a FMProErrors.tableNameMissing error when the table parameter is empty
     /// - Attention: This function is for Numeric id and not for the Text ones
-    func deleteRecord(table: String, id: Int) async throws {
-        guard !table.isEmpty else {
-            throw FMProErrors.tableNameMissing
-        }
-        let urlTmp = "\(baseUri)/\(table)(\(id))"
-        _ = try await executeRequest(url: urlTmp, method: .delete)
+    func deleteRecord(table: String, id: Int) async throws -> Bool {
+            return try await deleteRecord(table: table, id: String(id))
     }
     
     /// Delete all the records inside a specific table matching a query
@@ -66,12 +58,12 @@ public extension FMODataAPI {
     /// - Attention: the _?_ after the table name is already inserted
     /// - Attention: when inserting a filter clause write it this way: “$filter= conditions” Specify that condition should be defined this way: “searchedField confrontationOperator value”
     /// - Attention: in case of a Text, value must be in write in single quotes like this: ‘value’ , in case of a Number it doesn't need quotes.
-    func deleteRecordUsingQuery(table: String, query: String) async throws {
+    func deleteRecordUsingQuery(table: String, query: String) async throws -> Bool{
         guard !table.isEmpty else {
             throw FMProErrors.tableNameMissing
         }
         let urlTmp = "\(baseUri)/\(table)?\(query)"
-        _ = try await executeRequest(url: urlTmp, method: .delete)
+        return try await executeRequest(url: urlTmp, method: .delete).isEmpty
     }
 
     /// Delete all the records inside a specific table matching a filter query
@@ -83,7 +75,7 @@ public extension FMODataAPI {
     /// - Throws: an HTTPError.errorCode_400_badRequest error when the apex are not used correctly or in general the query is not correct, the name of the field is not correct or missing
     /// - Throws: an HTTPError.errorCode_404_notFound error when The name of the table in wich perform the action is wrong
     /// - Throws: a FMProErrors.tableNameMissing error when the table parameter is empty
-    func deleteRecord<T>(table: String, field: String, filterOption: FilterOption, value: T) async throws {
+    func deleteRecord<T>(table: String, field: String, filterOption: FilterOption, value: T) async throws -> Bool {
         guard !table.isEmpty else {
             throw FMProErrors.tableNameMissing
         }
@@ -93,6 +85,6 @@ public extension FMODataAPI {
         } else {
             urlTmp = "\(baseUri)/\(table)?$filter= \(field) \(filterOption.rawValue) \(value)"
         }
-        _ = try await executeRequest(url: urlTmp, method: .delete)
+        return try await executeRequest(url: urlTmp, method: .delete).isEmpty
     }
 }

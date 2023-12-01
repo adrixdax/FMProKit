@@ -14,15 +14,10 @@ public extension FMODataAPI {
     ///   - scriptParameterValue: a generic value passed to the script that can be a String, a Numeric or an object
     func runScript<T: Codable>(scriptName: String, scriptParameterValue: T?) async throws -> ScriptResult {
         let urlTmp = "\(baseUri)/Script.\(scriptName)"
-        
         if scriptParameterValue == nil {
-            let data = try await executeRequest(url: urlTmp, method: .post)
-            let fetchedData = try JSONDecoder().decode(Scripter.self, from: data)
-            return fetchedData.scriptResult
+            return try JSONDecoder().decode(Scripter.self, from: try await executeRequest(url: urlTmp, method: .post)).scriptResult
         } else {
-            let data = try await executeRequest(url: urlTmp, method: .post, data: ScriptCaller(scriptParameterValue: scriptParameterValue))
-            let fetchedData = try JSONDecoder().decode(Scripter.self, from: data)
-            return fetchedData.scriptResult
+            return try JSONDecoder().decode(Scripter.self, from: try await executeRequest(url: urlTmp, method: .post, data: ScriptCaller(scriptParameterValue: scriptParameterValue))).scriptResult
         }
     }
 }

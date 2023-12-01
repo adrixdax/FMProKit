@@ -12,7 +12,6 @@ public extension FMODataAPI {
     /// - Parameter query: An OData query used to filter the API call
     func executeQueryDelete(query: String) async throws {
         let urlTmp = "\(baseUri)/\(query)"
-        
         _ = try await executeRequest(url: urlTmp, method: .delete)
     }
 
@@ -21,16 +20,13 @@ public extension FMODataAPI {
     /// - Returns: An array of Model type after fetching all the data
     func executeQueryGet<T: Codable>(query: String) async throws -> [T] {
         let urlTmp = "\(baseUri)/\(query)"
-        
         let data = try await executeRequest(url: urlTmp, method: .get)
-        let fetched : [T] = []
         do{
-            let fetchedData = try JSONDecoder().decode(JSONValue<T>.self, from: data)
-            return fetchedData.value
+            return try decodeJSONArray(data: data)
         } catch {
             print(error.localizedDescription)
         }
-        return fetched
+        return []
     }
     
     /// Execute a generic Patch query
@@ -39,7 +35,6 @@ public extension FMODataAPI {
     ///   - record: the record of model T type with all the changes
     func executeQueryPatch<T: Codable>(query: String, data: T) async throws {
         let urlTmp = "\(baseUri)/\(query)"
-        
         _ = try await executeRequest(url: urlTmp, method: .patch, data: data)
     }
  
@@ -49,7 +44,6 @@ public extension FMODataAPI {
     ///   - data: It contains the data considered as a generic
     func executeQueryPost<T: Codable>(query: String, data: T) async throws {
         let url = "\(baseUri)/\(query)"
-        
         _ = try await executeRequest(url: url, method: .post, data: data)
     }
 }

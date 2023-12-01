@@ -14,7 +14,6 @@ extension APIProtocol {
         guard let requestURL = URL(string: url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "") else {
             throw URLError(.badURL)
         }
-        
         var request = URLRequest(url: requestURL)
         request.addValue(authData, forHTTPHeaderField: "Authorization")
         request.httpMethod = method.rawValue

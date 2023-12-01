@@ -42,7 +42,6 @@ public struct CreationTableField: Codable {
         self.fieldDefault = fieldDefault.rawValue
         self.nullable = nullable
         self.global = global
-        
         if type == .blob {
             self.externalSecurePath = externalSecurePath
         } else {

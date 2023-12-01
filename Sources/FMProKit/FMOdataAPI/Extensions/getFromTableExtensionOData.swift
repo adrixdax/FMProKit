@@ -17,17 +17,14 @@ public extension FMODataAPI {
     /// - Throws: a FMProErrors.tableNameMissing error when the table parameter is empty
     /// - Throws: a FMProErrors.negativeNumber error when the number parameter is a negative number
     func getTopTable<T: Codable>(table: String, number: Int) async throws -> [T] {
-        
         guard !table.isEmpty else {
             throw FMProErrors.tableNameMissing
         }
         guard number >= 0 else {
             throw FMProErrors.negativeNumber
         }
-        
         let urlTmp = "\(baseUri)/\(table)?$top=\(number)"
         let data = try await executeRequest(url: urlTmp, method: .get)
-        
         return try decodeJSONArray(data: data)
     }
     
@@ -41,17 +38,14 @@ public extension FMODataAPI {
     /// - Throws: a FMProErrors.tableNameMissing error when the table parameter is empty
     /// - Throws: a FMProErrors.negativeNumber error when the number parameter is a negative number
     func getSkipTable<T: Codable>(table: String, number: Int) async throws -> [T] {
-        
         guard !table.isEmpty else {
             throw FMProErrors.tableNameMissing
         }
         guard number >= 0 else {
             throw FMProErrors.negativeNumber
         }
-        
         let urlTmp = "\(baseUri)/\(table)?$skip=\(number)"
         let data = try await executeRequest(url: urlTmp, method: .get)
-        
         return try decodeJSONArray(data: data)
     }
     
@@ -62,16 +56,13 @@ public extension FMODataAPI {
     /// - Returns: return a single object of the generic type used to decode the records
     /// - Throws: an HTTPError.errorCode_404_notFound error when using the wrong table name or the recordId doesn't exist
     /// - Throws: a FMProErrors.tableNameMissing error when the table parameter is empty
-    func getRecord<T: Codable>(table: String, id: String) async throws -> T {
-        
+    func getRecord<T: Codable>(table: String, id: String) async throws -> [T] {
         guard !table.isEmpty else {
             throw FMProErrors.tableNameMissing
         }
-        
         let urlTmp = "\(baseUri)/\(table)('\(id)')"
         let data = try await executeRequest(url: urlTmp, method: .get)
-        
-        return try decodeJSONSingleValue(data: data)
+        return try decodeJSONArray(data: data)
     }
     
     ///  Fetch a record using its id and it decodes it using a struct/class
@@ -81,16 +72,8 @@ public extension FMODataAPI {
     /// - Returns: return a single object of the generic type used to decode the records
     /// - Throws: an HTTPError.errorCode_404_notFound error when using the wrong table name or the recordId doesn't exist
     /// - Throws: a FMProErrors.tableNameMissing error when the table parameter is empty
-    func getRecord<T: Codable>(table: String, id: UUID) async throws -> T {
-        
-        guard !table.isEmpty else {
-            throw FMProErrors.tableNameMissing
-        }
-        
-        let urlTmp = "\(baseUri)/\(table)('\(id.uuidString)')"
-        let data = try await executeRequest(url: urlTmp, method: .get)
-        
-        return try decodeJSONSingleValue(data: data)
+    func getRecord<T: Codable>(table: String, id: UUID) async throws -> [T] {
+        return try await getRecord(table: table, id: id.uuidString)
     }
     
     ///  Fetch a record using its id and it decodes it using a struct/class
@@ -100,16 +83,8 @@ public extension FMODataAPI {
     /// - Returns: return a single object of the generic type used to decode the records
     /// - Throws: an HTTPError.errorCode_404_notFound error when using the wrong table name or the recordId doesn't exist
     /// - Throws: a FMProErrors.tableNameMissing error when the table parameter is empty
-    func getRecord<T: Codable>(table: String, id: Int) async throws -> T {
-        
-        guard !table.isEmpty else {
-            throw FMProErrors.tableNameMissing
-        }
-        
-        let urlTmp = "\(baseUri)/\(table)(\(id))"
-        let data = try await executeRequest(url: urlTmp, method: .get)
-        
-        return try decodeJSONSingleValue(data: data)
+    func getRecord<T: Codable>(table: String, id: Int) async throws -> [T] {
+        return try await getRecord(table: table, id: String(id))
     }
         
     /// Retrieves the number of element inside a table
@@ -121,10 +96,8 @@ public extension FMODataAPI {
         guard !table.isEmpty else {
             throw FMProErrors.tableNameMissing
         }
-        
         let urlTmp = "\(baseUri)/\(table)/$count"
         let data = try await executeRequest(url: urlTmp, method: .get)
-        
         return try JSONDecoder().decode(Int.self, from: data)
     }
 
@@ -136,18 +109,16 @@ public extension FMODataAPI {
     /// - Returns: return a single object of the generic type used to decode the records
     /// - Throws: an HTTPError.errorCode_404_notFound error when using the wrong table name, the wrong field name or the recordId doesn't exist
     /// - Throws: a FMProErrors.tableNameMissing error when the table parameter is empty
-    func getField<T: Codable>(table: String, id: String, field: String) async throws -> T {
+    func getField<T: Codable>(table: String, id: String, field: String) async throws -> [T] {
         guard !table.isEmpty else {
             throw FMProErrors.tableNameMissing
         }
         guard !field.isEmpty else {
             throw FMProErrors.fieldNameMissing
         }
-        
         let urlTmp = "\(baseUri)/\(table)('\(id)')/\(field)"
         let data = try await executeRequest(url: urlTmp, method: .get)
-        
-        return try decodeJSONSingleValue(data: data)
+        return try decodeJSONArray(data: data)
     }
     
     /// Retrieves the value of a field of a specific record
@@ -158,19 +129,8 @@ public extension FMODataAPI {
     /// - Returns: return a single object of the generic type used to decode the records
     /// - Throws: an HTTPError.errorCode_404_notFound error when using the wrong table name, the wrong field name or the recordId doesn't exist
     /// - Throws: a FMProErrors.tableNameMissing error when the table parameter is empty
-    func getField<T: Codable>(table: String, id: UUID, field: String) async throws -> T {
-        guard !table.isEmpty else {
-            throw FMProErrors.tableNameMissing
-        }
-        
-        guard !field.isEmpty else {
-            throw FMProErrors.fieldNameMissing
-        }
-        
-        let urlTmp = "\(baseUri)/\(table)('\(id.uuidString)')/\(field)"
-        let data = try await executeRequest(url: urlTmp, method: .get)
-        
-        return try decodeJSONSingleValue(data: data)
+    func getField<T: Codable>(table: String, id: UUID, field: String) async throws -> [T] {
+        return try await getField(table: table, id: id.uuidString, field: field)
     }
     
     /// Retrieves the value of a field of a specific record
@@ -181,19 +141,9 @@ public extension FMODataAPI {
     /// - Returns: return a single object of the generic type used to decode the records
     /// - Throws: an HTTPError.errorCode_404_notFound error when using the wrong table name, the wrong field name or the recordId doesn't exist
     /// - Throws: a FMProErrors.tableNameMissing error when the table parameter is empty
-    func getField<T: Codable>(table: String, id: Int, field: String) async throws -> T {
-        guard !table.isEmpty else {
-            throw FMProErrors.tableNameMissing
-        }
-        
-        guard !field.isEmpty else {
-            throw FMProErrors.fieldNameMissing
-        }
-        
-        let urlTmp = "\(baseUri)/\(table)(\(id))/\(field)"
-        let data = try await executeRequest(url: urlTmp, method: .get)
-        
-        return try decodeJSONSingleValue(data: data)
+    func getField<T: Codable>(table: String, id: Int, field: String) async throws -> [T] {
+        return try await getField(table: table, id: String(id), field: field)
+
     }
    
     /// Retrieves the value of a field of a specific record as a binary Data
@@ -208,13 +158,10 @@ public extension FMODataAPI {
         guard !table.isEmpty else {
             throw FMProErrors.tableNameMissing
         }
-        
         guard !field.isEmpty else {
             throw FMProErrors.fieldNameMissing
         }
-        
         let urlTmp = "\(baseUri)/\(table)('\(id)')/\(field)/$value"
-        
         return try await executeRequest(url: urlTmp, method: .get)
     }
     
@@ -227,17 +174,7 @@ public extension FMODataAPI {
     /// - Throws: an HTTPError.errorCode_404_notFound error when using the wrong table name, the wrong field name or the recordId doesn't exist
     /// - Throws: a FMProErrors.tableNameMissing error when the table parameter is empty
     func getDataField(table: String, id: UUID, field: String) async throws -> Data {
-        guard !table.isEmpty else {
-            throw FMProErrors.tableNameMissing
-        }
-        
-        guard !field.isEmpty else {
-            throw FMProErrors.fieldNameMissing
-        }
-        
-        let urlTmp = "\(baseUri)/\(table)('\(id.uuidString)')/\(field)/$value"
-        
-        return try await executeRequest(url: urlTmp, method: .get)
+        return try await getDataField(table: table, id: id.uuidString, field: field)
     }
     
     /// Retrieves the value of a field of a specific record as a binary Data
@@ -249,16 +186,6 @@ public extension FMODataAPI {
     /// - Throws: an HTTPError.errorCode_404_notFound error when using the wrong table name, the wrong field name or the recordId doesn't exist
     /// - Throws: a FMProErrors.tableNameMissing error when the table parameter is empty
     func getDataField(table: String, id: Int, field: String) async throws -> Data {
-        guard !table.isEmpty else {
-            throw FMProErrors.tableNameMissing
-        }
-
-        guard !field.isEmpty else {
-            throw FMProErrors.fieldNameMissing
-        }
-        
-        let urlTmp = "\(baseUri)/\(table)(\(id))/\(field)/$value"
-        
-        return try await executeRequest(url: urlTmp, method: .get)
+        return try await getDataField(table: table, id: String(id), field: field)
     }
 }
