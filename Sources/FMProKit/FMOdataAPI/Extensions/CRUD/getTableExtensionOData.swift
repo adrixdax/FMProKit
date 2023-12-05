@@ -36,10 +36,7 @@ public extension FMODataAPI {
         guard !table.isEmpty else {
             throw FMProErrors.tableNameMissing
         }
-        
-        let urlTmp = "\(baseUri)/\(table)?\(query)"
-        let data = try await executeRequest(url: urlTmp, method: .get)
-        return try decodeJSONArray(data: data)
+        return try decodeJSONArray(data: try await executeRequest(url: "\(baseUri)/\(table)?\(query)", method: .get))
     }
 
     /// Fetches all the records inside a specific table matching a filter query and it decodes them using a struct/class
@@ -62,8 +59,7 @@ public extension FMODataAPI {
         } else {
             urlTmp = "\(baseUri)/\(table)?$filter= \(field) \(filterOption.rawValue) \(value)"
         }
-        let data = try await executeRequest(url: urlTmp, method: .get)
-        return try decodeJSONArray(data: data)
+        return try decodeJSONArray(data: try await executeRequest(url: urlTmp, method: .get))
     }
     
     /// Fetches all the records inside a specific table matching an order query and it decodes them using a struct/class
@@ -79,8 +75,6 @@ public extension FMODataAPI {
         guard !table.isEmpty else {
             throw FMProErrors.tableNameMissing
         }
-        let urlTmp = "\(baseUri)/\(table)?$orderby=\(fieldName) \(order.rawValue)"
-        let data = try await executeRequest(url: urlTmp, method: .get)
-        return try decodeJSONArray(data: data)
+        return try decodeJSONArray(data: try await executeRequest(url: "\(baseUri)/\(table)?$orderby=\(fieldName) \(order.rawValue)", method: .get))
     }
 }

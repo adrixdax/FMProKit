@@ -21,8 +21,7 @@ public extension FMODataAPI {
         guard !table.isEmpty else {
             throw FMProErrors.tableNameMissing
         }
-        let urlTmp = "\(baseUri)/\(table)('\(id)')"
-        return try decodeJSONArray(data: try await executeRequest(url: urlTmp, method: .patch, data: data))
+        return try decodeJSONArray(data: try await executeRequest(url: "\(baseUri)/\(table)('\(id)')", method: .patch, data: data))
     }
     
     /// Edit a record inside the specified table using its id

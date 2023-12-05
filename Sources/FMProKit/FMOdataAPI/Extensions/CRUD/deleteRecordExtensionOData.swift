@@ -20,8 +20,7 @@ public extension FMODataAPI {
         guard !table.isEmpty else {
             throw FMProErrors.tableNameMissing
         }
-        let urlTmp = "\(baseUri)/\(table)('\(id)')"
-        return try await executeRequest(url: urlTmp, method: .delete).isEmpty
+        return try await executeRequest(url: "\(baseUri)/\(table)('\(id)')", method: .delete).isEmpty
     }
     
     /// Delete the record inside a specific table using its id

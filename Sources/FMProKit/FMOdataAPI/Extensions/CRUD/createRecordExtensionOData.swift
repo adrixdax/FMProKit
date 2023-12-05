@@ -18,7 +18,6 @@ public extension FMODataAPI {
         guard !table.isEmpty else {
             throw FMProErrors.tableNameMissing
         }
-        let urlTmp = "\(baseUri)/\(table)"
-        return try decodeJSONArray(data: try await executeRequest(url: urlTmp, method: .post, data: data))
+        return try decodeJSONArray(data: try await executeRequest(url: "\(baseUri)/\(table)", method: .post, data: data))
     }
 }

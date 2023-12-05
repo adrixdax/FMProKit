@@ -10,19 +10,16 @@ import SwiftUI
 public extension FMODataAPI {
     /// Execute a generic Delete query
     /// - Parameter query: An OData query used to filter the API call
-    func executeQueryDelete(query: String) async throws {
-        let urlTmp = "\(baseUri)/\(query)"
-        _ = try await executeRequest(url: urlTmp, method: .delete)
+    func executeQueryDelete(query: String) async throws -> Bool{
+        return try await executeRequest(url: "\(baseUri)/\(query)", method: .delete).isEmpty
     }
 
     /// Execute a generic Get query
     /// - Parameter query: An OData query used to filter the API call
     /// - Returns: An array of Model type after fetching all the data
     func executeQueryGet<T: Codable>(query: String) async throws -> [T] {
-        let urlTmp = "\(baseUri)/\(query)"
-        let data = try await executeRequest(url: urlTmp, method: .get)
         do{
-            return try decodeJSONArray(data: data)
+            return try decodeJSONArray(data: try await executeRequest(url: "\(baseUri)/\(query)", method: .get))
         } catch {
             print(error.localizedDescription)
         }
@@ -33,17 +30,15 @@ public extension FMODataAPI {
     /// - Parameters:
     ///   - query: An OData query used to filter the API call
     ///   - record: the record of model T type with all the changes
-    func executeQueryPatch<T: Codable>(query: String, data: T) async throws {
-        let urlTmp = "\(baseUri)/\(query)"
-        _ = try await executeRequest(url: urlTmp, method: .patch, data: data)
+    func executeQueryPatch<T: Codable>(query: String, data: T) async throws -> [T]{
+        return try decodeJSONArray(data: try await executeRequest(url: "\(baseUri)/\(query)", method: .patch, data: data))
     }
  
     /// Execute a generic Post query
     /// - Parameters:
     ///   - query: An OData query used to filter the API call
     ///   - data: It contains the data considered as a generic
-    func executeQueryPost<T: Codable>(query: String, data: T) async throws {
-        let url = "\(baseUri)/\(query)"
-        _ = try await executeRequest(url: url, method: .post, data: data)
+    func executeQueryPost<T: Codable>(query: String, data: T) async throws -> [T]{
+        return try decodeJSONArray(data: try await executeRequest(url: "\(baseUri)/\(query)", method: .post, data: data))
     }
 }
