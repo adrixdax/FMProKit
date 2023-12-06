@@ -40,8 +40,12 @@ public class FMODataAPI: APIProtocol {
             self.authData = "Basic \(Data("\(username):\(password)".utf8).base64EncodedString())"
             self.request.addValue(self.authData, forHTTPHeaderField: "Authorization")
         }
-
-        public func decodeJSONArray<T: Codable>(data: Data) throws -> [T] {
+    
+    public func decodeJSONArray<T: Codable>(data: Data) throws -> [T] {
+        do {
             return try JSONDecoder().decode(JSONValue<T>.self, from: data).value
+        } catch {
+            return Array(arrayLiteral: try JSONDecoder().decode(T.self, from: data))
         }
+    }
 }

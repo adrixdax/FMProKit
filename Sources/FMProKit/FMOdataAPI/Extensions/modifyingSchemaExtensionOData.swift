@@ -14,12 +14,8 @@ public extension FMODataAPI {
         }
         guard !tableName.isEmpty else {
             throw FMProErrors.tableNameMissing
-        }
-        
-        let tmpTable = NewDBTable(tableName: tableName, fields: listOfColumns)
-        let urlTmp = "\(baseUri)/FileMaker_Tables"
-        
-        _ = try await executeRequest(url: urlTmp, method: .post, data: tmpTable)
+        }        
+        _ = try await executeRequest(url: "\(baseUri)/FileMaker_Tables", method: .post, data: NewDBTable(tableName: tableName, fields: listOfColumns))
     }
 
     /// Add a list of columns to an existent table
