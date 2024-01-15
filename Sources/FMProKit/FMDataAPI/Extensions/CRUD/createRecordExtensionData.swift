@@ -13,7 +13,7 @@ public extension FMDataAPI {
     ///   - data: The object of generic type that will be pushed into the database
     /// - Throws: a CommonErrors.tableNameMissing error when the table parameter is empty
     /// - Throws: an HTTPError.errorCode_500_internalServerError error when using the wrong table name or when inserting wrong data inside the table
-    func createRecord<T: Codable>(table: String, data: T) async throws {
+    func createRecord<T: Codable>(table: String, data: T) async throws -> [T] {
         guard !table.isEmpty else {
             throw FMProErrors.tableNameMissing
         }
@@ -22,10 +22,10 @@ public extension FMDataAPI {
         let insert = Insert(fieldData: data)
         
         do {
-            _ = try await executeRequest(url: urlTmp, method: .post, data: insert)
+            return try decodeJSONArray(data: try await executeRequest(url: urlTmp, method: .post, data: insert))
         } catch HTTPError.errorCode401Unauthorized {
             try await fetchToken()
-            try await createRecord(table: table, data: insert)
+            return try await createRecord(table: table, data: insert as! T)
         }
     }
 }
