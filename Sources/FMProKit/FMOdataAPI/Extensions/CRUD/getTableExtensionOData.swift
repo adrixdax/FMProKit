@@ -18,7 +18,8 @@ public extension FMODataAPI {
         guard !table.isEmpty else {
             throw FMProErrors.tableNameMissing
         }
-        return try await executeQueryGet(query: "\(table)")
+        return try decodeJSONArray(data: try await executeRequest(url: "\(baseUri)/\(table)", method: .get))
+
     }
     
     /// Fetches all the records inside a specific table matching a query and it decodes them using a struct/class
