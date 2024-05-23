@@ -23,7 +23,7 @@ struct Scripter: Codable {
 /// The resultParametere returns the value returned by the script if any
 /// The message explains the error if any occured
 public struct ScriptResult: Codable {
-    let code: Int?
-    let resultParameter: String?
-    let message: String?
+    public let code: Int?
+    public let resultParameter: String?
+    public let message: String?
 }
