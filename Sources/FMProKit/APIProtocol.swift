@@ -6,27 +6,44 @@
 //
 
 import Foundation
+import Combine
 
-/// This protocol defines the basic structre and functions signature
+/// This protocol defines the structure and function signatures for an API client.
 protocol APIProtocol: ObservableObject {
-    /// a constant contains the server domain
+    /// The server domain.
     var hostname: String { get }
-    /// a constant contains the actual name of your database
+    
+    /// The name of the database.
     var database: String { get }
-    /// a variable is used to build the first common part URI for APIs
+    
+    /// The base URI for API requests.
     var baseUri: String { get }
-    /// a constant contains the username credential to access the database
+    
+    /// The username credential to access the database.
     var username: String { get }
-    /// a constant contains the password credential to access the database
+    
+    /// The password credential to access the database.
     var password: String { get }
-    /// a variable contains the HTTP response in JSON format
+    
+    /// The HTTP response data in JSON format.
     var responseJSON: Data { get set }
-    /// extends the package instead of putting it inside the library
+    
+    /// The protocol version used for API requests.
     var protocolVersion: ProtocolVersion { get set }
-    /// Used for the Authorization HTTP firld
+    
+    /// The authorization data for HTTP requests.
     var authData: String { get set }
-    /// Store the last sent request
+    
+    /// The last sent request.
     var request: URLRequest { get set }
-    /// Intizializer
+    
+    /// Initializes a new API client.
+    ///
+    /// - Parameters:
+    ///   - server: The server domain.
+    ///   - database: The name of the database.
+    ///   - username: The username credential.
+    ///   - password: The password credential.
+    ///   - version: The protocol version.
     init(server: String, database: String, username: String, password: String, version: ProtocolVersion)
 }

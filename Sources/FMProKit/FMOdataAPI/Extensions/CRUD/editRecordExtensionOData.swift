@@ -21,7 +21,7 @@ public extension FMODataAPI {
         guard !table.isEmpty else {
             throw FMProErrors.tableNameMissing
         }
-        return try decodeJSONArray(data: try await executeRequest(url: "\(baseUri)/\(table)('\(id)')", method: .patch, data: data))
+        return try decodeJSONArray(from: try await executeRequest(url: "\(baseUri)/\(table)('\(id)')", method: .patch, data: data))
     }
     
     /// Edit a record inside the specified table using its id
@@ -65,7 +65,7 @@ public extension FMODataAPI {
             throw FMProErrors.tableNameMissing
         }
         let urlTmp = "\(baseUri)/\(table)?\(query)"
-        return try decodeJSONArray(data: try await executeRequest(url: urlTmp, method: .patch, data: data))
+        return try decodeJSONArray(from: try await executeRequest(url: urlTmp, method: .patch, data: data))
     }
     
     /// Edit all the records inside the specified table matching a filter query
@@ -93,6 +93,6 @@ public extension FMODataAPI {
         } else {
             urlTmp = "\(baseUri)/\(table)?$filter= \(field) \(filterOption.rawValue) \(value)"
         }
-        return try decodeJSONArray(data: try await executeRequest(url: urlTmp, method: .patch, data: data))
+        return try decodeJSONArray(from: try await executeRequest(url: urlTmp, method: .patch, data: data))
     }
 }

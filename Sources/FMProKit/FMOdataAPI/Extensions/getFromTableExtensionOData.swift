@@ -25,7 +25,7 @@ public extension FMODataAPI {
         }
         let urlTmp = "\(baseUri)/\(table)?$top=\(number)"
         let data = try await executeRequest(url: urlTmp, method: .get)
-        return try decodeJSONArray(data: data)
+        return try decodeJSONArray(from: data)
     }
     
     /// Fetches all the records except the first N records inside a specific table and it decodes them using a struct/class
@@ -46,7 +46,7 @@ public extension FMODataAPI {
         }
         let urlTmp = "\(baseUri)/\(table)?$skip=\(number)"
         let data = try await executeRequest(url: urlTmp, method: .get)
-        return try decodeJSONArray(data: data)
+        return try decodeJSONArray(from: data)
     }
     
     ///  Fetch a record using its id and it decodes it using a struct/class
@@ -62,7 +62,7 @@ public extension FMODataAPI {
         }
         let urlTmp = "\(baseUri)/\(table)('\(id)')"
         let data = try await executeRequest(url: urlTmp, method: .get)
-        return try decodeJSONArray(data: data)
+        return try decodeJSONArray(from: data)
     }
     
     ///  Fetch a record using its id and it decodes it using a struct/class
@@ -118,7 +118,7 @@ public extension FMODataAPI {
         }
         let urlTmp = "\(baseUri)/\(table)('\(id)')/\(field)"
         let data = try await executeRequest(url: urlTmp, method: .get)
-        return try decodeJSONArray(data: data)
+        return try decodeJSONArray(from: data)
     }
     
     /// Retrieves the value of a field of a specific record

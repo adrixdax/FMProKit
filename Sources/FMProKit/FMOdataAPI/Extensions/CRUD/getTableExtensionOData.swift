@@ -18,7 +18,7 @@ public extension FMODataAPI {
         guard !table.isEmpty else {
             throw FMProErrors.tableNameMissing
         }
-        return try decodeJSONArray(data: try await executeRequest(url: "\(baseUri)/\(table)", method: .get))
+        return try decodeJSONArray(from: try await executeRequest(url: "\(baseUri)/\(table)", method: .get))
 
     }
     
@@ -37,7 +37,7 @@ public extension FMODataAPI {
         guard !table.isEmpty else {
             throw FMProErrors.tableNameMissing
         }
-        return try decodeJSONArray(data: try await executeRequest(url: "\(baseUri)/\(table)?\(query)", method: .get))
+        return try decodeJSONArray(from: try await executeRequest(url: "\(baseUri)/\(table)?\(query)", method: .get))
     }
 
     /// Fetches all the records inside a specific table matching a filter query and it decodes them using a struct/class
@@ -60,7 +60,7 @@ public extension FMODataAPI {
         } else {
             urlTmp = "\(baseUri)/\(table)?$filter= \(field) \(filterOption.rawValue) \(value)"
         }
-        return try decodeJSONArray(data: try await executeRequest(url: urlTmp, method: .get))
+        return try decodeJSONArray(from: try await executeRequest(url: urlTmp, method: .get))
     }
     
     /// Fetches all the records inside a specific table matching an order query and it decodes them using a struct/class
@@ -76,6 +76,6 @@ public extension FMODataAPI {
         guard !table.isEmpty else {
             throw FMProErrors.tableNameMissing
         }
-        return try decodeJSONArray(data: try await executeRequest(url: "\(baseUri)/\(table)?$orderby=\(fieldName) \(order.rawValue)", method: .get))
+        return try decodeJSONArray(from: try await executeRequest(url: "\(baseUri)/\(table)?$orderby=\(fieldName) \(order.rawValue)", method: .get))
     }
 }

@@ -30,6 +30,6 @@ public extension FMODataAPI {
     /// - Returns: Returns an array of TableValue that contains all the informations of all the tables inside the database
     func getListOfTables() async throws -> [TableValue] {
         let urlTmp = "\(baseUri)"
-        return try decodeJSONArray(data: try await executeRequest(url: urlTmp, method: .get))
+        return try decodeJSONArray(from: try await executeRequest(url: urlTmp, method: .get))
     }
 }

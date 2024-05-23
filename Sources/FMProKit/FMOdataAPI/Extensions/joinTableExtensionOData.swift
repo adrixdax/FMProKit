@@ -26,7 +26,7 @@ public extension FMODataAPI {
         }
         
         let data = try await executeRequest(url: urlTmp, method: .get)
-        return try decodeJSONArray(data: data)
+        return try decodeJSONArray(from: data)
     }
     /// The function handles a simple join using the passed table in input based on the id of the record
     /// - Parameters:
@@ -46,7 +46,7 @@ public extension FMODataAPI {
         }
         
         let data = try await executeRequest(url: urlTmp, method: .get)
-        return try decodeJSONArray(data: data)
+        return try decodeJSONArray(from: data)
     }
     func getRelations<T: Codable>(table: String, id: Int, otherTables: String...) async throws -> [T] {
         guard !table.isEmpty && !otherTables.isEmpty && !otherTables.first!.isEmpty else {
@@ -58,7 +58,7 @@ public extension FMODataAPI {
             let otherTableFormatted = otherTable
             urlTmp += "/\(otherTableFormatted)"
         }
-        return try decodeJSONArray(data: try await executeRequest(url: urlTmp, method: .get))
+        return try decodeJSONArray(from: try await executeRequest(url: urlTmp, method: .get))
     }
     /// The function handles a simple join using the passed table in input and a specified query
     /// - Parameters:
@@ -74,7 +74,7 @@ public extension FMODataAPI {
             crossedJoinVariables = crossedJoinVariables + "," + table
         }
         let urlTmp = "\(baseUri)/$crossjoin(\(crossedJoinVariables))?$\(query)&$expand=\(fetchedTable)($select=*)"
-        return try decodeJSONArray(data: try await executeRequest(url: urlTmp, method: .get))
+        return try decodeJSONArray(from: try await executeRequest(url: urlTmp, method: .get))
     }
     /// The function handles a simple join using the passed table in input and a specified query
     /// - Parameters:
@@ -89,6 +89,6 @@ public extension FMODataAPI {
             crossedJoinVariables = crossedJoinVariables + "," + table
         }
         let urlTmp = "\(baseUri)/$crossjoin(\(crossedJoinVariables))?$$expand=\(fetchedTable)($select=*)"
-        return try decodeJSONArray(data: try await executeRequest(url: urlTmp, method: .get))
+        return try decodeJSONArray(from: try await executeRequest(url: urlTmp, method: .get))
     }
 }
