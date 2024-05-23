@@ -9,12 +9,12 @@ import Foundation
 
 // MARK: - ScriptCaller
 struct ScriptCaller<T: Codable>: Codable {
-    let scriptParameterValue: T
+    var scriptParameterValue: T
 }
 
 // MARK: - ScriptResult
 struct Scripter: Codable {
-    let scriptResult: ScriptResult
+    var scriptResult: ScriptResult
 }
 
 // MARK: - ScriptResult
@@ -23,7 +23,51 @@ struct Scripter: Codable {
 /// The resultParametere returns the value returned by the script if any
 /// The message explains the error if any occured
 public struct ScriptResult: Codable {
-    public let code: Int?
-    public let resultParameter: String?
-    public let message: String?
+    public var code: Int?
+    public var resultParameter: String?
+    public var message: String?
+
+    // MARK: - Initializers
+    public init(code: Int?, resultParameter: String?, message: String?) {
+        self.code = code
+        self.resultParameter = resultParameter
+        self.message = message
+    }
+
+    // MARK: - Getters and Setters
+    /// Getter for `code` property.
+    public var getCode: Int? {
+        get {
+            return code
+        }
+    }
+
+    /// Setter for `code` property.
+    public mutating func setCode(_ newValue: Int?) {
+        code = newValue
+    }
+
+    /// Getter for `resultParameter` property.
+    public var getResultParameter: String? {
+        get {
+            return resultParameter
+        }
+    }
+
+    /// Setter for `resultParameter` property.
+    public mutating func setResultParameter(_ newValue: String?) {
+        resultParameter = newValue
+    }
+
+    /// Getter for `message` property.
+    public var getMessage: String? {
+        get {
+            return message
+        }
+    }
+
+    /// Setter for `message` property.
+    public mutating func setMessage(_ newValue: String?) {
+        message = newValue
+    }
 }
